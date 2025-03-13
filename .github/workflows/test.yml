@@ -15,9 +15,9 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt  # Install required packages
+      - name: Install dependencies
+        run: pip install -r .github/workflows/requirements.txt
+
 
       - name: Run Tests
         run: pytest  # Run tests using pytest
