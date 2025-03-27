@@ -1,24 +1,27 @@
-name: Run Tests
+name: Deploy to AWS EC2
 
-on: [push, pull_request]  # Runs on every push & pull request
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest  # Run on latest Ubuntu
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          python-version: '3.10'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      - name: Install dependencies
-        run: pip install -r .github/workflows/requirements.txt
-
-
-      - name: Run Tests
-        run: pytest  # Run tests using pytest
-
+      - name: SSH into EC2 and deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@your-ec2-ip "cd /your-app && git pull && systemctl restart your-app"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
