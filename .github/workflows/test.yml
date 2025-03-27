@@ -30,7 +30,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Initialize Terraform
-        working-directory: ./terraform-aws  # ✅ सही फोल्डर सेट करें
+        working-directory: ./terraform-aws  
         run: terraform init
 
       - name: Validate Terraform Configuration
