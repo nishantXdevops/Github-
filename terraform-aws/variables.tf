@@ -1,31 +1,47 @@
 variable "instance_type" {
-    type = string
-    default = "t3.micro"
+  type    = string
+  default = "t3.micro"
 }
 
 variable "region" {
-   type = string
-   default = "us-east-1"
+  type    = string
+  default = "us-east-1"
 }
 
 variable "ami_id" {
-  type = string
+  type    = string
   default = "ami-0129865974a10c1cb"
-}  
+}
 
 variable "key_name" {
-   type = string 
-   default = "nishant"
-}   
+  type    = string
+  default = "nishant"
+}
 
-variable "bucket" {
-    type = string
-    default = "my-unique-bucket-nishant"
+variable "bucket_prefix" {
+  type    = string
+  default = "my-unique-bucket-nishant"
+}
+
+variable "security_group_name" {
+  type    = string
+  default = "nishant-security"
+}
+
+variable "security_group_description" {
+  type    = string
+  default = "Allow SSH and HTTP"
+}
+
+resource "random_string" "suffix" {
+  length  = 6
+  special = false
+  upper   = false
 }
 
 variable "user_data" {
-  type        = string
-  default     = <<-EOF
+  type    = string
+  default = <<-EOF
 #!/bin/bash
 sudo apt update -y
 sudo apt install -y docker.io
@@ -40,42 +56,11 @@ sudo usermod -aG docker ubuntu
 # Apply changes without requiring a reboot
 newgrp docker
 EOF
-
 }
 
 variable "instance_names" {
   type    = list(string)
   default = ["nishant"]
-}
-
-resource "aws_security_group" "my_sg" {
-  name        = "nishant-security"
-  description = "Allow SSH and HTTP"
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "nishant-Security"
-  }
 }
 
 variable "instance_ids" {
