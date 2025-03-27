@@ -14,7 +14,8 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Verify Terraform Files Exist
-        run: ls -la ./terraform  # ✅ Debug missing Terraform files
+        run: ls -la ./terraform-aws  # ✅ सही फोल्डर नाम
+
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
