@@ -1,22 +1,18 @@
-name: Deploy AWS Infrastructure with Terraform
-
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
+  workflow_dispatch:  # 👈 Manually trigger workflow from GitHub UI
 
 jobs:
-  terraform:
+  terraform_destroy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.7
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -28,11 +24,5 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
 
-      - name: Validate Terraform Configuration
-        run: terraform validate
-
-      - name: Plan Terraform Deployment
-        run: terraform plan -out=tfplan
-
-      - name: Apply Terraform Changes
-        run: terraform apply -auto-approve tfplan
+      - name: Destroy AWS Resources
+        run: terraform destroy -auto-approve
