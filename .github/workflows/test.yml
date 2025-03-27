@@ -16,6 +16,8 @@ jobs:
       - name: Verify Terraform Files Exist
         run: ls -la ./terraform-aws  # ✅ सही फोल्डर नाम
 
+      - name: Debug Repository Structure
+        run: ls -R  # ✅ Debugging Step
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -28,17 +30,17 @@ jobs:
           aws-region: us-east-1
 
       - name: Initialize Terraform
-        working-directory: ./terraform  # ✅ Ensures Terraform runs in the correct directory
+        working-directory: ./terraform-aws  # ✅ सही फोल्डर सेट करें
         run: terraform init
 
       - name: Validate Terraform Configuration
-        working-directory: ./terraform
+        working-directory: ./terraform-aws
         run: terraform validate
 
       - name: Plan Terraform Deployment
-        working-directory: ./terraform
+        working-directory: ./terraform-aws
         run: terraform plan -out=tfplan
 
       - name: Apply Terraform Changes
-        working-directory: ./terraform
+        working-directory: ./terraform-aws
         run: terraform apply -auto-approve tfplan
