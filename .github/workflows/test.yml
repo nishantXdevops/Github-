@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # 👈 Manually trigger workflow from GitHub UI
+  workflow_dispatch:
 
 jobs:
   terraform_apply:
@@ -10,6 +10,10 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Verify Terraform Files Exist
+        run: ls -la
+        working-directory: ./terraform  # 🔥 Ensure this is the correct path!
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -23,12 +27,16 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init
+        working-directory: ./terraform  # 🔥 Make sure this path is correct!
 
       - name: Validate Terraform Configuration
         run: terraform validate
+        working-directory: ./terraform
 
       - name: Plan Terraform Deployment
         run: terraform plan -out=tfplan
+        working-directory: ./terraform
 
       - name: Apply Terraform Changes
         run: terraform apply -auto-approve tfplan
+        working-directory: ./terraform
