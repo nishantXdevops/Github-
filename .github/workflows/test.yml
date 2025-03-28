@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-    pahts:
+    paths:
       - '.github/workflows/test.yml'
   workflow_dispatch:  # ✅ Allows manual triggering from GitHub UI
 
