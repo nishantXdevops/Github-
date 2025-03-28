@@ -32,7 +32,7 @@ jobs:
           INSTANCE_ID=$(aws ec2 run-instances \
             --image-id ami-0129865974a10c1cb \
             --instance-type t3.micro \
-            --key-name ${{ secrets.AWS_KEY_PAIR }} \
+            --key-name "my-key-pair-name"\
             --security-group-ids ${{ secrets.AWS_SECURITY_GROUP_ID }} \
             --count 1 \
             --query 'Instances[0].InstanceId' \
