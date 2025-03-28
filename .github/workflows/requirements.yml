@@ -25,7 +25,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1  # ✅ Fixed: Extra space removed
 
-      # नया EC2 Instance Launch करना
+      # launch ec2 instance using terraform
       - name: Launch EC2 Instance
         id: launch_ec2
         run: |
