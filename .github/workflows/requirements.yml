@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main  # सिर्फ main branch में push होने पर चलेगा
+    paths:
+      - '.github/workflows/requirements.yml'
+
   workflow_dispatch:  # Manually Trigger करने के लिए
 
 jobs:
