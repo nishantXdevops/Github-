@@ -17,31 +17,40 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-     
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  # ✅ Fixed: Extra space removed
+          aws-region: us-east-1
 
-      # launch ec2 instance using terraform
+      - name: Validate Secrets
+        run: |
+          if [[ -z "${{ secrets.AWS_KEY_PAIR }}" || -z "${{ secrets.AWS_SECURITY_GROUP_ID }}" ]]; then
+            echo "❌ ERROR: Missing AWS_KEY_PAIR or AWS_SECURITY_GROUP_ID secret!"
+            exit 1
+          fi
+
       - name: Launch EC2 Instance
         id: launch_ec2
         run: |
           INSTANCE_ID=$(aws ec2 run-instances \
             --image-id ami-0129865974a10c1cb \
             --instance-type t3.micro \
-            --key-name "my-key-pair-name"\
-            --security-group-ids sg-0abcd1234efgh5678 \
+            --key-name "${{ secrets.AWS_KEY_PAIR }}" \
+            --security-group-ids "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
             --count 1 \
             --query 'Instances[0].InstanceId' \
             --output text)
-          
+
+          if [[ -z "$INSTANCE_ID" ]]; then
+            echo "❌ ERROR: Failed to launch EC2 instance!"
+            exit 1
+          fi
+
           echo "Launched EC2 Instance: $INSTANCE_ID"
           echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
 
-      # EC2 Instance का Public IP लेना
       - name: Get EC2 Public IP
         id: get_ec2_ip
         run: |
@@ -49,11 +58,15 @@ jobs:
             --instance-ids $INSTANCE_ID \
             --query 'Reservations[0].Instances[0].PublicIpAddress' \
             --output text)
-          
+
+          if [[ -z "$PUBLIC_IP" ]]; then
+            echo "❌ ERROR: Failed to retrieve EC2 public IP!"
+            exit 1
+          fi
+
           echo "EC2 Public IP: $PUBLIC_IP"
           echo "PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
 
-      # 🚀 SSH Private Key को Setup करना
       - name: Setup SSH Private Key
         run: |
           mkdir -p ~/.ssh
@@ -61,11 +74,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $PUBLIC_IP >> ~/.ssh/known_hosts
 
-      # ✅ EC2 Instance को SSH के जरिए Configure करना
       - name: Configure EC2 via SSH
         run: |
           echo "Waiting for instance to be ready..."
-          sleep 60  # Instance boot होने का wait
+          sleep 60
 
           echo "Connecting via SSH and running setup script..."
           ssh -i ~/.ssh/id_rsa ubuntu@$PUBLIC_IP << 'EOF'
@@ -74,8 +86,7 @@ jobs:
             echo "<h1>Deployed via GitHub Actions 🚀</h1>" | sudo tee /var/www/html/index.html
           EOF
 
-      # (Optional) EC2 Instance को Terminate करना
       - name: Terminate EC2 Instance (Optional)
-        if: false  # इसको true करने पर instance delete हो जाएगा
+        if: false
         run: |
           aws ec2 terminate-instances --instance-ids $INSTANCE_ID
