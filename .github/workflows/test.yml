@@ -1,9 +1,12 @@
 name: Terraform Deployment
 
+
 on:
   push:
     branches:
       - main
+    pahts:
+      - '.github/workflows/test.yml'
   workflow_dispatch:  # ✅ Allows manual triggering from GitHub UI
 
 jobs:

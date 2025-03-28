@@ -3,11 +3,11 @@ name: Launch and Setup EC2 Instance
 on:
   push:
     branches:
-      - main  # सिर्फ main branch में push होने पर चलेगा
+      - main
     paths:
       - '.github/workflows/requirements.yml'
 
-  workflow_dispatch:  # Manually Trigger करने के लिए
+  workflow_dispatch:
 
 jobs:
   launch-ec2:
@@ -23,14 +23,14 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:  us-east-1
+          aws-region: us-east-1  # ✅ Fixed: Extra space removed
 
       # नया EC2 Instance Launch करना
       - name: Launch EC2 Instance
         id: launch_ec2
         run: |
           INSTANCE_ID=$(aws ec2 run-instances \
-            --image-id ami-0129865974a10c1cb \  # ✅ Updated AMI ID
+            --image-id ami-0129865974a10c1cb \
             --instance-type t3.micro \
             --key-name ${{ secrets.AWS_KEY_PAIR }} \
             --security-group-ids ${{ secrets.AWS_SECURITY_GROUP_ID }} \
@@ -53,20 +53,28 @@ jobs:
           echo "EC2 Public IP: $PUBLIC_IP"
           echo "PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
 
-      # EC2 Instance को SSH के जरिए Configure करना
+      # 🚀 SSH Private Key को Setup करना
+      - name: Setup SSH Private Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $PUBLIC_IP >> ~/.ssh/known_hosts
+
+      # ✅ EC2 Instance को SSH के जरिए Configure करना
       - name: Configure EC2 via SSH
         run: |
           echo "Waiting for instance to be ready..."
           sleep 60  # Instance boot होने का wait
 
           echo "Connecting via SSH and running setup script..."
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/${{ secrets.AWS_KEY_PAIR }} ubuntu@$PUBLIC_IP << 'EOF'
+          ssh -i ~/.ssh/id_rsa ubuntu@$PUBLIC_IP << 'EOF'
             sudo apt update && sudo apt install -y nginx
             sudo systemctl start nginx
             echo "<h1>Deployed via GitHub Actions 🚀</h1>" | sudo tee /var/www/html/index.html
           EOF
 
-      # Instance को Terminate करने का Option (Optional)
+      # (Optional) EC2 Instance को Terminate करना
       - name: Terminate EC2 Instance (Optional)
         if: false  # इसको true करने पर instance delete हो जाएगा
         run: |
