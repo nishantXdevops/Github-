@@ -33,7 +33,7 @@ jobs:
             --image-id ami-0129865974a10c1cb \
             --instance-type t3.micro \
             --key-name "my-key-pair-name"\
-            --security-group-ids ${{ secrets.AWS_SECURITY_GROUP_ID }} \
+            --security-group-ids sg-0abcd1234efgh5678 \
             --count 1 \
             --query 'Instances[0].InstanceId' \
             --output text)
