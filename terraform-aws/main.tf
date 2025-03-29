@@ -47,7 +47,7 @@ resource "aws_instance" "instances" {
   }
 }
 
-# ✅ S3 Bucket Creation
+#  S3 Bucket Creation
 resource "aws_s3_bucket" "my_bucket" {
   bucket = var.bucket
   acl    = "private"
