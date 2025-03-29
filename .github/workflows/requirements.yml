@@ -31,25 +31,24 @@ jobs:
             exit 1
           fi
 
-      - name: Launch EC2 Instance
-        id: launch_ec2
-        run: |
-          INSTANCE_ID=$(aws ec2 run-instances \
-            --image-id ami-0129865974a10c1cb \
-            --instance-type t3.micro \
-            --key-name "${{ secrets.AWS_KEY_PAIR }}" \
-            --security-group-ids "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
-            --count 1 \
-            --query 'Instances[0].InstanceId' \
-            --output text)
+      -- name: Launch EC2 Instance
+  run: |
+    INSTANCE_ID=$(aws ec2 run-instances \
+      --image-id ami-0129865974a10c1cb \
+      --instance-type t3.micro \
+      --key-name "my-key-pair" \
+      --security-group-ids "sg-0abcd1234efgh5678" \
+      --count 1 \
+      --query 'Instances[0].InstanceId' \
+      --output text)
 
-          if [[ -z "$INSTANCE_ID" ]]; then
-            echo "❌ ERROR: Failed to launch EC2 instance!"
-            exit 1
-          fi
+    if [[ -z "$INSTANCE_ID" ]]; then
+      echo "❌ ERROR: Failed to launch EC2 instance!"
+      exit 1
+    fi
 
-          echo "Launched EC2 Instance: $INSTANCE_ID"
-          echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
+    echo "Launched EC2 Instance: $INSTANCE_ID"
+    echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
 
       - name: Get EC2 Public IP
         id: get_ec2_ip
