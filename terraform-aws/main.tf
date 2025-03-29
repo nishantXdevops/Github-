@@ -2,9 +2,10 @@ provider "aws" {
   region = var.region
 }
 
+# ✅ Security Group Creation
 resource "aws_security_group" "my_sg" {
-  name        = "${var.security_group_name}-${random_string.suffix.result}"
-  description = var.security_group_description
+  name        = "test-security-group"
+  description = "Allow SSH and HTTP"
 
   ingress {
     from_port   = 22
@@ -28,16 +29,17 @@ resource "aws_security_group" "my_sg" {
   }
 
   tags = {
-    Name = "${var.security_group_name}-${random_string.suffix.result}"
+    Name = "nishant-Security-Group"
   }
 }
 
+# ✅ EC2 Instances Creation
 resource "aws_instance" "instances" {
-  for_each               = toset(var.instance_names)
-  ami                    = var.ami_id
-  instance_type          = var.instance_type
-  key_name               = var.key_name
-  user_data              = var.user_data
+  for_each        = toset(var.instance_names)
+  ami            = var.ami_id
+  instance_type  = var.instance_type
+  key_name       = var.key_name
+  user_data      = var.user_data
   vpc_security_group_ids = [aws_security_group.my_sg.id]
 
   tags = {
@@ -45,8 +47,8 @@ resource "aws_instance" "instances" {
   }
 }
 
+# ✅ S3 Bucket Creation
 resource "aws_s3_bucket" "my_bucket" {
-  bucket = "${var.bucket_prefix}-${random_string.suffix.result}"
+  bucket = var.bucket
+  acl    = "private"
 }
-
-# 🔴 ❌ Remove the aws_s3_bucket_acl Resource ❌ 🔴
