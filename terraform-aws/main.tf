@@ -39,7 +39,7 @@ resource "aws_instance" "instances" {
   ami            = var.ami_id
   instance_type  = var.instance_type
   key_name       = var.key_name
-  user_data      = var.user_data
+# user_data      = var.user_data
   vpc_security_group_ids = [aws_security_group.my_sg.id]
 
   tags = {
@@ -47,8 +47,15 @@ resource "aws_instance" "instances" {
   }
 }
 
-#  S3 Bucket Creation
-resource "aws_s3_bucket" "my_bucket" {
-  bucket = var.bucket
-  acl    = "private"
+# Generate a random string for uniqueness
+resource "random_string" "suffix" {
+  length  = 6
+  special = false
+  upper   = false
 }
+
+# Create an S3 bucket with a random suffix
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "${var.bucket}-${random_string.suffix.result}"
+}
+

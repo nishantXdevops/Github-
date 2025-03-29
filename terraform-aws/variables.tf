@@ -14,16 +14,14 @@ variable "ami_id" {
 }  
 
 variable "key_name" {
-   type = string 
-   default = "nishant"
+  type = string 
+  default = "nishant"
 }   
 
 variable "bucket" {
-    type = string
-    default = "my-unique-bucket-nishant"
+  type    = string
+  default = "my-unique-bucket-nishant"
 }
-
-
 
 variable "user_data" {
   type        = string
