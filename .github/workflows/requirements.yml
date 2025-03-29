@@ -1,18 +1,14 @@
-name: Launch and Setup EC2 Instance
+name: Launch EC2 Instance
 
 on:
   push:
     branches:
       - main
-    paths:
-      - '.github/workflows/requirements.yml'
-
-  workflow_dispatch:
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   launch-ec2:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -22,70 +18,16 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: us-east-1  # Change if needed
 
-      - name: Validate Secrets
+      - name: Launch EC2 Instance with Nishant Key
         run: |
-          if [[ -z "${{ secrets.AWS_KEY_PAIR }}" || -z "${{ secrets.AWS_SECURITY_GROUP_ID }}" ]]; then
-            echo "❌ ERROR: Missing AWS_KEY_PAIR or AWS_SECURITY_GROUP_ID secret!"
-            exit 1
-          fi
-
-      -- name: Launch EC2 Instance
-  run: |
-    INSTANCE_ID=$(aws ec2 run-instances \
-      --image-id ami-0129865974a10c1cb \
-      --instance-type t3.micro \
-      --key-name "my-key-pair" \
-      --security-group-ids "sg-0abcd1234efgh5678" \
-      --count 1 \
-      --query 'Instances[0].InstanceId' \
-      --output text)
-
-    if [[ -z "$INSTANCE_ID" ]]; then
-      echo "❌ ERROR: Failed to launch EC2 instance!"
-      exit 1
-    fi
-
-    echo "Launched EC2 Instance: $INSTANCE_ID"
-    echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
-
-      - name: Get EC2 Public IP
-        id: get_ec2_ip
-        run: |
-          PUBLIC_IP=$(aws ec2 describe-instances \
-            --instance-ids $INSTANCE_ID \
-            --query 'Reservations[0].Instances[0].PublicIpAddress' \
+          INSTANCE_ID=$(aws ec2 run-instances \
+            --image-id ami-084568db4383264d4 \  # Your AMI ID
+            --instance-type t2.micro \
+            --key-name nishant \  # Your key pair name (must exist in AWS)
+            --security-groups default \  # Change security group if needed
+            --query 'Instances[0].InstanceId' \
             --output text)
 
-          if [[ -z "$PUBLIC_IP" ]]; then
-            echo "❌ ERROR: Failed to retrieve EC2 public IP!"
-            exit 1
-          fi
-
-          echo "EC2 Public IP: $PUBLIC_IP"
-          echo "PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
-
-      - name: Setup SSH Private Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H $PUBLIC_IP >> ~/.ssh/known_hosts
-
-      - name: Configure EC2 via SSH
-        run: |
-          echo "Waiting for instance to be ready..."
-          sleep 60
-
-          echo "Connecting via SSH and running setup script..."
-          ssh -i ~/.ssh/id_rsa ubuntu@$PUBLIC_IP << 'EOF'
-            sudo apt update && sudo apt install -y nginx
-            sudo systemctl start nginx
-            echo "<h1>Deployed via GitHub Actions 🚀</h1>" | sudo tee /var/www/html/index.html
-          EOF
-
-      - name: Terminate EC2 Instance (Optional)
-        if: false
-        run: |
-          aws ec2 terminate-instances --instance-ids $INSTANCE_ID
+          echo "EC2 Instance Launched with ID: $INSTANCE_ID"
