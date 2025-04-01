@@ -1,16 +1,17 @@
 name: Launch EC2 Instance
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  workflow_dispatch:  # Allows manual trigger
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Manually trigger workflow
 
 jobs:
   launch-ec2:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
@@ -18,16 +19,14 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  # Change if needed
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Launch EC2 Instance with Nishant Key
+      - name: Launch EC2 Instance
         run: |
-          INSTANCE_ID=$(aws ec2 run-instances \
-            --image-id ami-084568db4383264d4 \  # Your AMI ID
-            --instance-type t2.micro \
-            --key-name nishant \  # Your key pair name (must exist in AWS)
-            --security-groups default \  # Change security group if needed
-            --query 'Instances[0].InstanceId' \
-            --output text)
-
-          echo "EC2 Instance Launched with ID: $INSTANCE_ID"
+          aws ec2 run-instances \
+            --image-id ami-0129865974a10c1cb \
+            --instance-type t3.micro \
+            --key-name nishant \
+            --security-groups default \
+            --count 1 \
+            --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Github-Action-Instance}]'
