@@ -1,13 +1,12 @@
 name: "Terraform launch instance install Jenkins"
 
-# on:
-#   push:
-#     branches:
-#       - main  # Runs on push to main branch
-#   pull_request:
-#     branches:
-#       - main  # Runs on PR to main branch
-
+on:
+  push:
+    branches:
+      - main  # Runs on push to main branch
+  pull_request:
+    branches:
+      - main  # Runs on PR to main branch
 jobs:
   terraform:
     name: "Terraform Deployment"
@@ -41,3 +40,4 @@ jobs:
       - name: Apply Terraform (Only on main branch)
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
+
