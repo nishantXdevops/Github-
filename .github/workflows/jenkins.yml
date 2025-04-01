@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main  # Runs on push to main branch
-  pull_request:
-    branches:
-      - main  # Runs on PR to main branch
+ 
+    paths:
+        - '.github/workflows/test.yml'   
 jobs:
   terraform:
     name: "Terraform Deployment"
