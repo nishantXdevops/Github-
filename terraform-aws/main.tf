@@ -24,7 +24,7 @@ resource "aws_security_group" "my_sg" {
   ingress {
     from_port   = 8080
     to_port     = 8080
-    protocol    = "tpc"
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
  }
  
@@ -46,7 +46,7 @@ resource "aws_instance" "instances" {
   ami            = var.ami_id
   instance_type  = var.instance_type
   key_name       = var.key_name
-  user_data      = file("userdata.sh") 
+  user_data      = var.user_data
   vpc_security_group_ids = [aws_security_group.my_sg.id]
 
   tags = {

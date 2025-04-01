@@ -28,22 +28,22 @@ variable "instance_names" {
   default = ["nishant"]
 }
 
-# variable "user_data" {
-#   type        = string
-#   default     = <<-EOF
-# #!/bin/bash
-# sudo apt update -y
-# sudo apt install -y docker.io
+ variable "user_data" {
+   type        = string
+   default     = <<-EOF
+ #!/bin/bash
+ sudo apt update -y
+ sudo apt install -y docker.io
 
-# # Start Docker service
-# sudo systemctl enable docker
-# sudo systemctl start docker
+ # Start Docker service
+ sudo systemctl enable docker
+ sudo systemctl start docker
 
-# # Add the default Ubuntu user to the Docker group (to run Docker without sudo)
-# sudo usermod -aG docker ubuntu
+ # Add the default Ubuntu user to the Docker group (to run Docker without sudo)
+ sudo usermod -aG docker ubuntu
 
-# # Apply changes without requiring a reboot
-# newgrp docker
-# EOF
+ # Apply changes without requiring a reboot
+ newgrp docker
+ EOF
 
-# }
+ }
