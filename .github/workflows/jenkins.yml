@@ -1,12 +1,12 @@
-name: "Terraform launch instance and install jenkins"
+name: "Terraform  install jenkins"
 
 
 on:
-   push:
-     branches:
-      - main
-     paths:
-       - '.github/workflows/jenkins.yml'
+  #  push:
+  #    branches:
+  #     - main
+  #    paths:
+  #      - '.github/workflows/jenkins.yml'
 workflow_dispatch:  # ✅ Allows manual triggering from GitHub UI
 
 
