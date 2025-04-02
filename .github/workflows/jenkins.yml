@@ -1,6 +1,20 @@
+name: "Terraform launch instance and install Docker"
+
+
+on:
+   push:
+     branches:
+      - main
+     paths:
+       - '.github/workflows/jenkins.yml'
+workflow_dispatch:  # ✅ Allows manual triggering from GitHub UI
+
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1  # 👈 Ensure AWS_REGION is set globally
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -13,16 +27,16 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: us-east-1  # 👈 Make sure this is included
 
       - name: Initialize Terraform
         run: terraform init
-        working-directory: jenkins   # 👈 Set working directory
+        working-directory: jenkins  
 
       - name: Validate Terraform
         run: terraform validate
-        working-directory: jenkins  # 👈 Set working directory
+        working-directory: jenkins  
 
       - name: Plan Terraform Changes
         run: terraform plan -out=tfplan
-        working-directory: jenkins   # 👈 Set working directory
+        working-directory: jenkins  
