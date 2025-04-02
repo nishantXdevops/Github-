@@ -1,9 +1,9 @@
-name: Terraform install jenkins 
+name: Terraform install jenkins
 
 on:
-  # push:
-  #   branches:
-  #     - main  # Change this to match your repo's default branch
+  push:
+    branches:
+      - main  # Ensure this matches your default branch
   pull_request:
 
 jobs:
@@ -26,13 +26,3 @@ jobs:
           aws-region: us-east-1
 
       - name: Initialize Terraform
-        run: terraform init
-        working-directory: jenkins  
-
-      - name: Validate Terraform
-        run: terraform validate
-        working-directory: jenkins  
-
-      - name: Plan Terraform Changes
-        run: terraform plan -out=tfplan
-        working-directory: jenkins  
