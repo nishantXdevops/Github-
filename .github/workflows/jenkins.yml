@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main  # Ensure this matches your default branch
-  pull_request:
+  
 
 jobs:
   terraform:
