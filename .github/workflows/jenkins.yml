@@ -1,4 +1,4 @@
-name: "Terraform launch instance and install Docker"
+name: "Terraform launch instance and install jenkins"
 
 
 on:
