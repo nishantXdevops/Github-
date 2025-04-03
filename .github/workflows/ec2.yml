@@ -1,9 +1,9 @@
 name: Launch EC2 Instance
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   workflow_dispatch:  # Manually trigger workflow
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
       - name: Launch EC2 Instance
         run: |
           aws ec2 run-instances \
-            --image-id ami-0129865974a10c1cb \
+            --image-id ami-007f35e81392786a4 \
             --instance-type t3.micro \
             --key-name nishant \
             --security-groups default \
