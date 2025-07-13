@@ -1,0 +1,15 @@
+# youtube-login/values.yaml
+
+replicaCount: 1
+
+image:
+  repository: nishanttdevops/game-login-page
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080
+
+resources: {}

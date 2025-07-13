@@ -2,11 +2,13 @@ name: "Terraform launch instance and install Docker"
 
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - '.github/workflows/test.yml'
+  push:
+    branches:
+      - main  
+    paths:
+      - 'terraform-aws-docker/**'
+      - '.github/workflows/terraform-aws-docker'
+
   workflow_dispatch:  # ✅ Allows manual triggering from GitHub UI
 
 jobs:
@@ -33,17 +35,17 @@ jobs:
           aws-region: us-east-1
 
       - name: Initialize Terraform
-        working-directory: ./terraform-aws  
+        working-directory: ./terraform-aws-docker  
         run: terraform init
 
       - name: Validate Terraform Configuration
-        working-directory: ./terraform-aws
+        working-directory: ./terraform-aws-docker
         run: terraform validate
 
       - name: Plan Terraform Deployment
-        working-directory: ./terraform-aws
+        working-directory: ./terraform-aws-docker
         run: terraform plan -out=tfplan
 
       - name: Apply Terraform Changes
-        working-directory: ./terraform-aws
+        working-directory: ./terraform-aws-docker
         run: terraform apply -auto-approve tfplan

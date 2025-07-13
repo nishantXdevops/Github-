@@ -4,6 +4,8 @@ on:
   # push:
   #  branches:
   #  - main  # Change this to match your repo's default branch
+      paths:
+       - '.github/workflows/  
   workflow_dispatch:
 
 jobs:
@@ -27,15 +29,15 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          cd jenkins 
+          cd terraform-aws-jenkins
           terraform init 
 
       - name: Validate Terraform
         run: |
-          cd jenkins  
+          cd terraform-aws-jenkins 
           terraform validate
 
       - name: Plan Terraform Changes
         run: |
-          cd jenkins
+          cd terraform-aws-jenkins
           terraform apply -auto-approve  
