@@ -2,11 +2,13 @@ name: Terraform install jenkins
 
 on:
   # push:
-  #  branches:
-  #  - main  # Change this to match your repo's default branch
-      paths:
-       - '.github/workflows/  
-  workflow_dispatch:
+  #   branches:
+  #     - main  
+  #   paths:
+  #     - 'terraform-aws-docker/**'
+  #     - '.github/workflows/terraform-aws-jenkins'
+
+   workflow_dispatch:
 
 jobs:
   terraform:
