@@ -1,0 +1,19 @@
+variable "aws_region" {
+    type = string
+    default = "us-east-1"
+}
+
+variable "ami_id"{
+    type = string
+    default = "ami-0129865974a10c1cb"
+}
+
+variable "instance_type" {
+    type = string
+    default = "t3.micro"
+}
+
+variable "key_name"{
+    type = string
+    default = "nishant-hp-key"
+}
