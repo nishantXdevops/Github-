@@ -17,3 +17,8 @@ variable "key_name"{
     type = string
     default = "nishant-hp-key"
 }
+
+variable "instance_name"{
+    type = string
+    default = "testing"
+}
