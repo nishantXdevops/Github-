@@ -1,4 +1,4 @@
-name: Terraform install jenkins 
+name: Terraform launch instance and install jenkins 
 
 on:
   # push:
