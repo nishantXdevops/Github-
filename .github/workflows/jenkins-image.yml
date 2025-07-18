@@ -1,12 +1,12 @@
-name: Build and Push Docker Images basic app
+name: Build and Push Docker Images jenkins 
 
 on:
 #   push:
 #     branches:
 #       - main  
 #     paths:
-#       - 'basic-app-image/**'
-#       - '.github/workflows/basic-app-image.yml'
+#       - 'jenkins-build-image/**'
+#       - '.github/workflows/jenkins-build-image.yml'
 
   workflow_dispatch:
 
@@ -27,6 +27,6 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./basic-app-image
+          context: ./jenkins-build-image
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/basic-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/jenkins-build-image
