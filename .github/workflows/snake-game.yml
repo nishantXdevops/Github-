@@ -1,12 +1,12 @@
-name: Build and Push Dockerhub Images snke-game:letest
+name: Build and Push Dockerhub Images snake-game:letest
 
 on:
-#   push:
-#     branches:
-#       - main  
-#     paths:
-#       - 'snke-game-image/**'
-#       - '.github/workflows/snke-game-image'
+  push:
+    branches:
+      - main  
+    paths:
+      - 'snake-game-image/**'
+      - '.github/workflows/snake-game-image'
 
   workflow_dispatch:
 
@@ -27,6 +27,6 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./snke-game-image
+          context: ./snake-game-image
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/snke-game:letest
+          tags: ${{ secrets.DOCKER_USERNAME }}/snake-game:letest
