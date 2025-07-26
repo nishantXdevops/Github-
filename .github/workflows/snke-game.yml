@@ -1,4 +1,4 @@
-name: Build and Push Docker Images basic app
+name: Build and Push Dockerhub Images snke-game:letest
 
 on:
 #   push:

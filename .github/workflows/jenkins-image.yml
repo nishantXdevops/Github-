@@ -1,4 +1,4 @@
-name: Build and Push Docker Images jenkins 
+name: Build and Push Dockerhub Images jenkins 
 
 on:
 #   push:
