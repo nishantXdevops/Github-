@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "my_sg" {
-  name        = "nishant-security-group"
+  name        = "nishant-security-group-2"
   description = "Allow SSH and HTTP"
 
   ingress {
