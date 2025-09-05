@@ -1,4 +1,4 @@
-name: Build and Push Dockerhub Images snake-game:letest
+name: Build and Push Dockerhub Images snake-game:latest
 
 on:
   push:
