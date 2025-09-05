@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy game code
-COPY snake_game.py .
+COPY snake-python.py .
 
 # Install pygame
 RUN pip install pygame==2.6.0
