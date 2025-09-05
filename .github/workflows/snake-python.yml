@@ -29,4 +29,4 @@ jobs:
         with:
           context: ./snake-python-image
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/snake-python-image:letest
+          tags: ${{ secrets.DOCKER_USERNAME }}/snake-python-image:latest
