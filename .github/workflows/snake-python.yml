@@ -1,12 +1,12 @@
 name: Build and Push Dockerhub Images snake-python:letest
 
 on:
-  push:
-    branches:
-      - main  
-    paths:
-      - 'snake-python-image/**'
-      - '.github/workflows/snake-game-image'
+  # push:
+  #   branches:
+  #     - main  
+  #   paths:
+  #     - 'snake-python-image/**'
+  #     - '.github/workflows/snake-python-image'
 
   workflow_dispatch:
 

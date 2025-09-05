@@ -1,12 +1,12 @@
 name: Build and Push Dockerhub Images snake-game:latest
 
 on:
-  push:
-    branches:
-      - main  
-    paths:
-      - 'snake-game-image/**'
-      - '.github/workflows/snake-game-image'
+  # push:
+  #   branches:
+  #     - main  
+  #   paths:
+  #     - 'snake-game-image/**'
+  #     - '.github/workflows/snake-game-image'
 
   workflow_dispatch:
 
