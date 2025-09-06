@@ -11,3 +11,4 @@ COPY snake-python.py .
 
 # Run app
 CMD ["python", "snake-python.py"]
+
