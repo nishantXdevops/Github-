@@ -19,4 +19,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
 
-CMD ["xvfb-run", "-s", "-screen 0 800x600x24", "python3", "snake-python.py"]
+CMD ["xvfb-run", "-s", "-screen", "0", "800x600x24", "python3", "snake-python.py"]
