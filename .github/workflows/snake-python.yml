@@ -1,14 +1,12 @@
-name: Build and Push Dockerhub Images snake-python:letest
+name: Build and Push Dockerhub Images snake-python:latest
 
 on:
-  # push:
-  #   branches:
-  #     - main  
-  #   paths:
-  #     - 'snake-python-image/**'
-  #     - '.github/workflows/snake-python-image'
-
-  workflow_dispatch:
+# push: # branches:
+ # - main # paths: 
+ # - 'snake-python-image/**' 
+ # - '.github/workflows/snake-python-image'
+ 
+workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -24,9 +22,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker Image (no-cache)
         uses: docker/build-push-action@v5
         with:
           context: ./snake-python-image
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/snake-python-image:latest
+          no-cache: true   # ← ye line add kar di
