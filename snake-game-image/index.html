@@ -8,7 +8,6 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: black;
       overflow: hidden;
     }
 
@@ -27,7 +26,6 @@
 
     canvas {
       display: block;
-      background: black;
     }
   </style>
 </head>
@@ -35,6 +33,12 @@
 
 <!-- Game heading -->
 <div id="heading">Snake Game Nishant Sharma</div>
+
+<!-- Background music -->
+<audio id="bgMusic" autoplay loop>
+  <source src="music.mp3" type="audio/mpeg">
+  Your browser does not support audio.
+</audio>
 
 <!-- Game canvas -->
 <canvas id="game"></canvas>
@@ -46,6 +50,9 @@ var context = canvas.getContext('2d');
 // set canvas to full screen
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+var bgImage = new Image();
+bgImage.src = "background.jpg"; // <-- yahan apni photo file ka naam
 
 var grid = 20;
 var count = 0;
@@ -83,7 +90,11 @@ function loop() {
   if (++count < 8) return;
 
   count = 0;
-  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw background image
+  context.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+
+  // Overlay text
   drawBackgroundText();
 
   snake.x += snake.dx;
@@ -101,10 +112,12 @@ function loop() {
     snake.cells.pop();
   }
 
+  // draw apple
   context.fillStyle = 'red';
   context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
 
-  context.fillStyle = 'green';
+  // draw snake
+  context.fillStyle = 'lime';
   snake.cells.forEach(function(cell, index) {
     context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
 
