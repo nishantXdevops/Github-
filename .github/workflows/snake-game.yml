@@ -29,4 +29,4 @@ jobs:
         with:
           context: ./snake-game-image
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/snake-game:v1
+          tags: ${{ secrets.DOCKER_USERNAME }}/snake-game:v2
