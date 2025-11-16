@@ -61,8 +61,8 @@ resource "aws_instance" "instances" {
    upper   = false
  }
 
- # Create an S3 bucket with a random suffix
- resource "aws_s3_bucket" "my_bucket" {
-   bucket = "${var.bucket}-${random_string.suffix.result}"
- }
+#  # Create an S3 bucket with a random suffix
+#  resource "aws_s3_bucket" "my_bucket" {
+#    bucket = "${var.bucket}-${random_string.suffix.result}"
+#  }
  

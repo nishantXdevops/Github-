@@ -18,10 +18,10 @@ variable "key_name" {
   default = "nishant-hp-key"
 }
 
-variable "bucket" {
-  type    = string
-  default = "my-unique-bucket-nishant"
-}
+# variable "bucket" {
+#   type    = string
+#   default = "my-unique-bucket-nishant"
+# }
 
 variable "instance_names" {
   type    = list(string)
