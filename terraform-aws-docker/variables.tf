@@ -6,11 +6,11 @@ variable "instance_type" {
 variable "region" {
   type    = string
   default = "us-east-1"
-}
+} 
 
 variable "ami_id" {
   type    = string
-  default = "ami-0129865974a10c1cb"  # Ensure this AMI is valid for your region
+  default = "ami-0ecb62995f68bb549"  # Ensure this AMI is valid for your region
 }
 
 variable "key_name" {
