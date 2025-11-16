@@ -4,7 +4,7 @@ provider "aws" {
 
 # ✅ Security Group Creation
 resource "aws_security_group" "my_sg" {
-  name        = "test-security-group"
+  name        = "test-security-group01"
   description = "Allow SSH and HTTP"
 
   ingress {
